@@ -1,12 +1,22 @@
-let lkg = document.getElementById('kg');
-let lfnt = document.getElementById('fnt');
-let lRes = document.getElementById('res');
+let btn = document.getElementById('btn');
+let temp = document.getElementById('fNode');
+let canv = document.getElementById('canv');
+btn.addEventListener('click', loadPhoto);
 
-function convertKgToFunt(){
-    let kg = lkg.value;
-    let fnt = lfnt.value;
-    const a = 0.454;
-    let result = kg / a;
-    console.log('Результат в фунтах ' + result + ' килограммов');
-    lRes.innerText = result;
-}
+function loadPhoto(rangePhoto){
+    let result = fetch('https://api.slingacademy.com/v1/sample-data/photos?offset=5&limit=10')
+    .then(result1 => result1.json()).then(result2 => result2.photos).then(a => {
+    let arr=[];
+    for(let i=0; i < 10; i++){
+        arr.push(a[i].url); 
+    }
+    return arr;
+    }).then(b => {
+    for(let i =0; i < 10; i++){
+        let photo = temp.content.cloneNode(true);
+        photo.getElementById('img').setAttribute('src', b[i]);
+        console.log(b[i]);
+        canv.appendChild(photo);
+    }
+    });
+};
